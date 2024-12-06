@@ -10,12 +10,15 @@ class createFile
 {
 public:
 
-    void createFileWithPassword(const string & password)
+    void createFileWithPassword()
     {
         ofstream file("haslo.txt");
         if (file.is_open())
         {
-            file << password;
+            file << "dishonored\n"; // Tytu³ gry
+            file << "gladiator\n";  // Tytu³ filmu
+            file << "chemia\n";     // Przedmiot szkolny
+            file << "flet\n";       // Instrument
             file.close();
         }
         else
@@ -24,19 +27,44 @@ public:
         }
     }
 
-    string readPasswordFromFile()
+    //string readPasswordFromFile()
+    //{
+    //    ifstream file("haslo.txt");
+    //    if (file.is_open())
+    //    {
+    //        getline(file, password);
+    //        file.close();
+    //    }
+    //    else
+    //    {
+    //        cout << "Nie mozna odczytac pliku" << endl;
+    //    }
+    //    return password;
+    //}
+
+    string getPasswordForCategory(int category) 
     {
         ifstream file("haslo.txt");
-        if (file.is_open())
-        {
-            getline(file, password);
-            file.close();
-        }
-        else
+
+        if (!file.is_open()) 
         {
             cout << "Nie mozna odczytac pliku" << endl;
+            return "";
         }
-        return password;
+
+        int currentLine = 1;
+        while (std::getline(file, password)) 
+        {
+            if (currentLine == category) 
+            {
+                file.close();
+                return password;
+            }
+            currentLine++;
+        }
+
+        file.close();
+        return "";
     }
 
 private:
@@ -48,11 +76,37 @@ private:
 int main()
 {
 	createFile plik;
-	string hasloPlik = "przyklad";
-    plik.createFileWithPassword(hasloPlik);
-    string hasloGra = plik.readPasswordFromFile();
+    plik.createFileWithPassword();
 
-    cout << hasloGra;
+    cout << "Wybierz kategorie:" << endl;
+    cout << "1 - Tytul gry" << endl;
+    cout << "2 - Tytul filmu" << endl;
+    cout << "3 - Przedmiot szkolny" << endl;
+    cout << "4 - Instrument" << endl;
+
+    int category;
+    cin >> category;
+
+    if (category < 1 || category > 4) 
+    {
+        cout << "Niepoprawna kategoria" << endl;
+        return 1;
+    }
+
+    string password = plik.getPasswordForCategory(category);
+    if (password.empty()) 
+    {
+        cout << "Nie udalo sie wczytac hasla" << endl;
+        return 1;
+    }
+
+    cout << password;
+
+	//string hasloPlik = "przyklad";
+    //plik.createFileWithPassword(hasloPlik);
+    //string hasloGra = plik.readPasswordFromFile();
+
+    //cout << hasloGra;
 
 	return 0;
 }
