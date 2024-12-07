@@ -67,10 +67,51 @@ public:
         secretWord = password;
         currentWord = string(secretWord.length(), '_');
         attemptsLeft = MAX_ATTEMPTS;
+    }
 
-        cout << secretWord << endl;
-        cout << currentWord << endl;
-        cout << attemptsLeft << endl;
+    void play()
+    {
+        cout << "Masz " << attemptsLeft << " prob podania poprawnych liter" << endl;
+
+        while (attemptsLeft > 0) 
+        {
+            displayGameInfo();
+            char guess;
+            cout << "Podaj litere: ";
+            cin >> guess;
+
+            if (isalpha(guess)) 
+            {
+                guess = tolower(guess);
+                bool correctGuess = updateCurrentWord(guess);
+
+                if (correctGuess) 
+                {
+                    cout << "Dobra litera" << endl << endl;
+                    if (currentWord == secretWord) 
+                    {
+                        cout << "Udalo sie, zgadles slowo: " << secretWord << endl;
+                        cout << "Zrobiles to z iloscia bledow rowna: " << MAX_ATTEMPTS - attemptsLeft << endl;
+                        return;
+                    }
+                }
+                else 
+                {
+                    cout << "Zla litera" << endl << endl;
+                    attemptsLeft--;
+                }
+            }
+            else 
+            {
+                cout << "Prosze podaj poprawna wartosc" << endl;
+            }
+        }
+
+        if (attemptsLeft == 0) 
+        {
+            displayGameInfo();
+            cout << "Nie udalo sie, poprawne slowo to: " << secretWord << endl;
+        }
     }
 
 
@@ -79,7 +120,36 @@ private:
     string currentWord;
     int attemptsLeft;
     int MAX_ATTEMPTS = 6;
-    
+    vector<char> guessedLetters;
+
+    bool updateCurrentWord(char letter)
+    {
+        bool correctGuess = false;
+        for (int i = 0; i < secretWord.length(); i++) 
+        {
+            if (secretWord[i] == letter) 
+            {
+                currentWord[i] = letter;
+                correctGuess = true;
+            }
+        }
+        guessedLetters.push_back(letter);
+        return correctGuess;
+    }
+
+    void displayGameInfo()
+    {
+        cout << "Slowo: " << currentWord << endl;
+        cout << "Pozostale proby: " << attemptsLeft << endl;
+        cout << "Podane litery: ";
+
+        for (char letter : guessedLetters) 
+        {
+            cout << letter << " ";
+        }
+        cout << endl << endl;
+    }
+
 };
 
 int main()
@@ -109,9 +179,8 @@ int main()
         return 1;
     }
 
-    //cout << password;
-
     HangmanGame game(password);
+    game.play();
 
 	return 0;
 }
