@@ -39,7 +39,7 @@ public:
         }
 
         int currentLine = 1;
-        while (std::getline(file, password)) 
+        while (getline(file, password)) 
         {
             if (currentLine == category) 
             {
@@ -58,6 +58,29 @@ private:
 
 };
 
+class HangmanGame 
+{
+public:
+
+    HangmanGame(const string& password)
+    {
+        secretWord = password;
+        currentWord = string(secretWord.length(), '_');
+        attemptsLeft = MAX_ATTEMPTS;
+
+        cout << secretWord << endl;
+        cout << currentWord << endl;
+        cout << attemptsLeft << endl;
+    }
+
+
+private:
+    string secretWord;
+    string currentWord;
+    int attemptsLeft;
+    int MAX_ATTEMPTS = 6;
+    
+};
 
 int main()
 {
@@ -86,8 +109,9 @@ int main()
         return 1;
     }
 
-    cout << password;
+    //cout << password;
 
+    HangmanGame game(password);
 
 	return 0;
 }
