@@ -27,20 +27,6 @@ public:
         }
     }
 
-    //string readPasswordFromFile()
-    //{
-    //    ifstream file("haslo.txt");
-    //    if (file.is_open())
-    //    {
-    //        getline(file, password);
-    //        file.close();
-    //    }
-    //    else
-    //    {
-    //        cout << "Nie mozna odczytac pliku" << endl;
-    //    }
-    //    return password;
-    //}
 
     string getPasswordForCategory(int category) 
     {
@@ -102,11 +88,6 @@ int main()
 
     cout << password;
 
-	//string hasloPlik = "przyklad";
-    //plik.createFileWithPassword(hasloPlik);
-    //string hasloGra = plik.readPasswordFromFile();
-
-    //cout << hasloGra;
 
 	return 0;
 }
